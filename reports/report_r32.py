@@ -110,11 +110,10 @@ def rep2_4(hosts_df, logs_df, maintenance_df):
     print("Generando Gráficos de duración Mantenciones vs tiempo de respuesta por país...")
     merge_logs = pd.merge(hosts_df, logs_df, how='inner', right_on='id_server', left_index=True).reset_index().drop(['timestamp','status_code','request_type','user','id_log','environment','hostname','os','id','node','index_y','index_x'], axis=1)
     merge_maint = pd.merge(hosts_df, maintenance_df, how='inner', right_on='id_server', left_index=True).reset_index().drop(['date','type','technician','notes','id_maintenance','environment','hostname','os','id','node','index_y','index_x'], axis=1)
-    merge_logs_maint = pd.merge(merge_logs, merge_maint, how='inner', on=['country','id_server']).drop(['index_x','index_y','id_server'], axis=1)
+    merge_logs_maint = pd.merge(merge_logs, merge_maint, how='inner', on=['country', 'id_server']).drop(['index_x','index_y'], axis=1)
     
     if(merge_logs_maint['country'].nunique() == merge_logs_maint['country'].size):
-        print("\nError, no hay compatibilidad entre los datos generados de logs y mantenimeinto (id_server)\nConsiderar elegir un n más grande en config.py\n")
-        return
+        print("\nAdvertencia, no hay compatibilidad entre los datos generados de logs y mantenimeinto (id_server)\nConsiderar elegir un n más grande en config.py\n")
     
     fig, ax = plt.subplots()
     
